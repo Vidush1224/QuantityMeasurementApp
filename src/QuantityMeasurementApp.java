@@ -1,53 +1,63 @@
 import java.util.Objects;
 
-public class QuantityMeasurementApp {
+public class Length {
 
-    public static class Feet {
-        private final double value;
+    private final double value;
+    private final LengthUnit unit;
 
-        public Feet(double value) {
-            this.value = value;
+    public enum LengthUnit {
+        FEET(12.0),
+        INCHES(1.0);
+
+        private final double conversionFactor;
+
+        LengthUnit(double conversionFactor) {
+            this.conversionFactor = conversionFactor;
         }
 
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-            Feet feet = (Feet) obj;
-            return Double.compare(feet.value, value) == 0;
-        }
-    }
-
-    public static class Inches {
-        private final double value;
-
-        public Inches(double value) {
-            this.value = value;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-            Inches inches = (Inches) obj;
-            return Double.compare(inches.value, value) == 0;
+        public double getConversionFactor() {
+            return conversionFactor;
         }
     }
 
-    public static boolean demonstrateFeetEquality(double a, double b) {
-        Feet f1 = new Feet(a);
-        Feet f2 = new Feet(b);
-        return f1.equals(f2);
+    public Length(double value, LengthUnit unit) {
+        if (unit == null) {
+            throw new IllegalArgumentException("Unit cannot be null");
+        }
+        this.value = value;
+        this.unit = unit;
     }
 
-    public static boolean demonstrateInchesEquality(double a, double b) {
-        Inches i1 = new Inches(a);
-        Inches i2 = new Inches(b);
-        return i1.equals(i2);
+    private double convertToBaseUnit() {
+        return this.value * this.unit.getConversionFactor();
+    }
+
+    public boolean compare(Length other) {
+        if (other == null) return false;
+        return Double.compare(this.convertToBaseUnit(), other.convertToBaseUnit()) == 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) return true;
+
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Length other = (Length) obj;
+
+        return this.compare(other);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(convertToBaseUnit());
     }
 
     public static void main(String[] args) {
-        System.out.println(demonstrateFeetEquality(1.0, 1.0));
-        System.out.println(demonstrateInchesEquality(1.0, 1.0));
+        Length length1 = new Length(1.0, LengthUnit.FEET);
+        Length length2 = new Length(12.0, LengthUnit.INCHES);
+
+        System.out.println("Are lengths equal? " + length1.equals(length2)); // true
     }
 }

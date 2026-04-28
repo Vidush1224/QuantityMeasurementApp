@@ -35,12 +35,17 @@ class QuantityLength {
     }
 
     public QuantityLength add(QuantityLength other) {
-        if (other == null) throw new IllegalArgumentException();
+        return add(other, this.unit);
+    }
+
+    public QuantityLength add(QuantityLength other, LengthUnit targetUnit) {
+        if (other == null || targetUnit == null)
+            throw new IllegalArgumentException();
 
         double sumFeet = this.toFeet() + other.toFeet();
-        double result = unit.fromFeet(sumFeet);
+        double result = targetUnit.fromFeet(sumFeet);
 
-        return new QuantityLength(result, this.unit);
+        return new QuantityLength(result, targetUnit);
     }
 
     public static double convert(double value, LengthUnit from, LengthUnit to) {
@@ -68,12 +73,19 @@ class QuantityLength {
 public class QuantityMeasurementApp {
     public static void main(String[] args) {
 
-        System.out.println(new QuantityLength(1, LengthUnit.FEET)
-                .add(new QuantityLength(12, LengthUnit.INCHES))); // 2 FEET
+        System.out.println(
+            new QuantityLength(1, LengthUnit.FEET)
+                .add(new QuantityLength(12, LengthUnit.INCHES), LengthUnit.FEET)
+        ); // 2 FEET
 
-        System.out.println(new QuantityLength(1, LengthUnit.YARDS)
-                .add(new QuantityLength(3, LengthUnit.FEET))); // 2 YARDS
+        System.out.println(
+            new QuantityLength(1, LengthUnit.FEET)
+                .add(new QuantityLength(12, LengthUnit.INCHES), LengthUnit.INCHES)
+        ); // 24 INCHES
 
-        System.out.println(QuantityLength.convert(1, LengthUnit.FEET, LengthUnit.INCHES)); // 12
+        System.out.println(
+            new QuantityLength(1, LengthUnit.FEET)
+                .add(new QuantityLength(12, LengthUnit.INCHES), LengthUnit.YARDS)
+        ); // ~0.667 YARDS
     }
 }

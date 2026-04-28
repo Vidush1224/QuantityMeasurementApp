@@ -1,82 +1,40 @@
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
 public class QuantityMeasurementAppTest {
 
     @Test
-    public void testEquality_FeetToFeet_SameValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
+    void testBasicEquality() {
+        assertEquals(
+                new QuantityLength(1, LengthUnit.FEET),
+                new QuantityLength(12, LengthUnit.INCHES));
+    }
 
-        assertTrue(l1.equals(l2));
+    private void assertEquals(QuantityLength quantityLength, QuantityLength quantityLength2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'assertEquals'");
     }
 
     @Test
-    public void testEquality_InchToInch_SameValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(1.0, Length.LengthUnit.INCHES);
-
-        assertTrue(l1.equals(l2));
+    void testYardConversion() {
+        assertEquals(
+                new QuantityLength(1, LengthUnit.YARDS),
+                new QuantityLength(36, LengthUnit.INCHES));
     }
 
     @Test
-    public void testEquality_FeetToInch_EquivalentValue() {
-        Length feet = new Length(1.0, Length.LengthUnit.FEET);
-        Length inches = new Length(12.0, Length.LengthUnit.INCHES);
-
-        assertTrue(feet.equals(inches));
+    void testCentimeterConversion() {
+        assertEquals(
+                new QuantityLength(1, LengthUnit.CENTIMETERS),
+                new QuantityLength(0.393701, LengthUnit.INCHES));
     }
 
     @Test
-    public void testEquality_InchToFeet_EquivalentValue() {
-        Length inches = new Length(12.0, Length.LengthUnit.INCHES);
-        Length feet = new Length(1.0, Length.LengthUnit.FEET);
-
-        assertTrue(inches.equals(feet));
+    void testInequality() {
+        assertNotEquals(
+                new QuantityLength(1, LengthUnit.FEET),
+                new QuantityLength(2, LengthUnit.FEET));
     }
 
-    @Test
-    public void testEquality_FeetToFeet_DifferentValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(2.0, Length.LengthUnit.FEET);
-
-        assertFalse(l1.equals(l2));
-    }
-
-    @Test
-    public void testEquality_InchToInch_DifferentValue() {
-        Length l1 = new Length(1.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(2.0, Length.LengthUnit.INCHES);
-
-        assertFalse(l1.equals(l2));
-    }
-
-    @Test
-    public void testEquality_SameReference() {
-        Length l = new Length(1.0, Length.LengthUnit.FEET);
-
-        assertTrue(l.equals(l));
-    }
-
-    @Test
-    public void testEquality_NullComparison() {
-        Length l = new Length(1.0, Length.LengthUnit.FEET);
-
-        assertFalse(l.equals(null));
-    }
-
-    @Test
-    public void testEquality_InvalidUnit() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Length(1.0, null);
-        });
-    }
-
-    @Test
-    public void testCrossUnitInequality() {
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(10.0, Length.LengthUnit.INCHES);
-
-        assertFalse(l1.equals(l2));
+    private void assertNotEquals(QuantityLength quantityLength, QuantityLength quantityLength2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'assertNotEquals'");
     }
 }

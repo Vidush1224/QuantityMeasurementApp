@@ -108,4 +108,63 @@ public class QuantityMeasurementAppTest {
         Quantity<WeightUnit> res = w.add(zero);
         assertEquals(5.0, res.getValue(), EPSILON);
     }
+    // ---------- VOLUME TESTS ----------
+
+    @Test
+    void volumeLitreEqualsMillilitre() {
+        Quantity<VolumeUnit> l = new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> ml = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+        assertTrue(l.equals(ml));
+    }
+
+    @Test
+    void volumeGallonEqualsLitre() {
+        Quantity<VolumeUnit> gal = new Quantity<>(1.0, VolumeUnit.GALLON);
+        Quantity<VolumeUnit> l = new Quantity<>(3.78541, VolumeUnit.LITRE);
+        assertTrue(gal.equals(l));
+    }
+
+    @Test
+    void convertLitreToMillilitre() {
+        Quantity<VolumeUnit> l = new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> res = l.convertTo(VolumeUnit.MILLILITRE);
+        assertEquals(1000.0, res.getValue(), EPSILON);
+    }
+
+    @Test
+    void convertGallonToLitre() {
+        Quantity<VolumeUnit> gal = new Quantity<>(1.0, VolumeUnit.GALLON);
+        Quantity<VolumeUnit> res = gal.convertTo(VolumeUnit.LITRE);
+        assertEquals(3.79, res.getValue(), EPSILON); // rounded
+    }
+
+    @Test
+    void addLitreAndMillilitre() {
+        Quantity<VolumeUnit> l = new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> ml = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+        Quantity<VolumeUnit> res = l.add(ml, VolumeUnit.LITRE);
+        assertEquals(2.0, res.getValue(), EPSILON);
+    }
+
+    @Test
+    void addWithTargetUnitMillilitre() {
+        Quantity<VolumeUnit> l = new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> ml = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+        Quantity<VolumeUnit> res = l.add(ml, VolumeUnit.MILLILITRE);
+        assertEquals(2000.0, res.getValue(), EPSILON);
+    }
+
+    @Test
+    void volumeVsLengthShouldNotBeEqual() {
+        Quantity<VolumeUnit> v = new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<LengthUnit> l = new Quantity<>(1.0, LengthUnit.FEET);
+        assertFalse(v.equals(l));
+    }
+
+    @Test
+    void volumeVsWeightShouldNotBeEqual() {
+        Quantity<VolumeUnit> v = new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<WeightUnit> w = new Quantity<>(1.0, WeightUnit.KILOGRAM);
+        assertFalse(v.equals(w));
+    }
 }

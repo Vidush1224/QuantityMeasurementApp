@@ -167,4 +167,13 @@ public class QuantityMeasurementAppTest {
         Quantity<WeightUnit> w = new Quantity<>(1.0, WeightUnit.KILOGRAM);
         assertFalse(v.equals(w));
     }
+    public static <U extends IMeasurable> Quantity<U> demonstrateSubtraction(
+            Quantity<U> q1, Quantity<U> q2, U target) {
+        return q1.subtract(q2, target);
+    }
+
+    public static <U extends IMeasurable> double demonstrateDivision(
+            Quantity<U> q1, Quantity<U> q2) {
+        return q1.divide(q2);
+    }
 }
